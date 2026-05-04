@@ -30,7 +30,7 @@ struct HFlowSeparatorLayout: Layout {
         subviews[element.index].place(
           at: CGPoint(
             x: bounds.minX + xOffset + element.origin.x,
-            y: bounds.minY + row.originY
+            y: bounds.minY + row.originY + (row.height - element.size.height) / 2
           ),
           proposal: ProposedViewSize(element.size)
         )
