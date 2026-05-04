@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
   name: "InlineFlowSeparatorLayout",
   platforms: [
-    .iOS(.v18)
+    .iOS(.v18),
+    .macOS(.v15)
   ],
   products: [
     .library(name: "InlineFlowSeparatorLayout", targets: [
