@@ -46,13 +46,13 @@ public struct HFlowSeparator<Content: View, Separator: View>: View {
         ForEach(indexedSubviews, id: \.1.id) { index, subview in
           HStack(spacing: spacing) {
             subview
-            
+
             if index < subviews.index(before: subviews.endIndex) {
               let separatorVisibilityBinding = Binding(
                 get: { separatorVisibility[index] ?? false },
                 set: { separatorVisibility[index] = $0 }
               )
-              
+
               HStack(spacing: 0) {
                 separator
               }

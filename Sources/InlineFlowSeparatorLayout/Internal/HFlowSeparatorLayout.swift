@@ -3,7 +3,7 @@ import SwiftUI
 struct HFlowSeparatorLayout: Layout {
   var alignment: HorizontalAlignment = .center
   var spacing: CGFloat = 0
-  
+
   func sizeThatFits(
     proposal: ProposedViewSize,
     subviews: Subviews,
@@ -14,7 +14,7 @@ struct HFlowSeparatorLayout: Layout {
       maxWidth: proposal.width ?? .greatestFiniteMagnitude
     ).size
   }
-  
+
   func placeSubviews(
     in bounds: CGRect,
     proposal: ProposedViewSize,
@@ -23,7 +23,7 @@ struct HFlowSeparatorLayout: Layout {
   ) {
     let arrangement = arrangement(for: subviews, maxWidth: bounds.width)
     applySeparatorVisibility(arrangement.separatorVisibility, subviews: subviews)
-    
+
     for row in arrangement.rows {
       let xOffset = xOffset(for: row.width, in: bounds)
       for element in row.elements {
@@ -47,13 +47,13 @@ private extension HFlowSeparatorLayout {
     let separatorIndices = Set(
       subviews.indices.filter { subviews[$0][HFlowSeparatorRoleKey.self] }
     )
-    
+
     var context = BuildContext(
       separatorVisibility: Dictionary(
         uniqueKeysWithValues: separatorIndices.map { ($0, true) }
       )
     )
-    
+
     for index in subviews.indices {
       placeSubview(
         at: index,
@@ -63,11 +63,11 @@ private extension HFlowSeparatorLayout {
         context: &context
       )
     }
-    
+
     if !context.currentRow.elements.isEmpty {
       context.rows.append(context.currentRow)
     }
-    
+
     let finalized = finalizeRows(context.rows)
     return Arrangement(
       rows: finalized.rows,
@@ -75,11 +75,11 @@ private extension HFlowSeparatorLayout {
       separatorVisibility: context.separatorVisibility
     )
   }
-  
+
   func availableWidth(for maxWidth: CGFloat) -> CGFloat {
     maxWidth.isFinite && maxWidth > 0 ? maxWidth : .greatestFiniteMagnitude
   }
-  
+
   func placeSubview(
     at index: Int,
     sizes: [CGSize],
@@ -88,18 +88,18 @@ private extension HFlowSeparatorLayout {
     context: inout BuildContext
   ) {
     let size = sizes[index]
-    
+
     if separatorIndices.contains(index) {
       context.pendingSeparatorIndex = index
       return
     }
-    
+
     guard !context.currentRow.isEmpty else {
       context.pendingSeparatorIndex = nil
       context.currentRow.append(index: index, size: size, spacing: spacing)
       return
     }
-    
+
     if let separatorIndex = context.pendingSeparatorIndex {
       placeItemWithPendingSeparator(
         item: MeasuredSubview(index: index, size: size),
@@ -109,7 +109,7 @@ private extension HFlowSeparatorLayout {
       )
       return
     }
-    
+
     if fits(sizes: [size], in: context.currentRow, maxWidth: availableWidth) {
       context.currentRow.append(index: index, size: size, spacing: spacing)
     } else {
@@ -118,7 +118,7 @@ private extension HFlowSeparatorLayout {
       context.currentRow.append(index: index, size: size, spacing: spacing)
     }
   }
-  
+
   func placeItemWithPendingSeparator(
     item: MeasuredSubview,
     separator: MeasuredSubview,
@@ -134,10 +134,10 @@ private extension HFlowSeparatorLayout {
       context.currentRow = Row()
       context.currentRow.append(index: item.index, size: item.size, spacing: spacing)
     }
-    
+
     context.pendingSeparatorIndex = nil
   }
-  
+
   func fits(
     sizes: [CGSize],
     in row: Row,
@@ -149,18 +149,18 @@ private extension HFlowSeparatorLayout {
     let addedSpacing = row.isEmpty ? 0 : spacing * CGFloat(sizes.count)
     return row.width + addedSpacing + addedWidth <= maxWidth
   }
-  
+
   func finalizeRows(_ rows: [Row]) -> (rows: [Row], size: CGSize) {
     var positionedRows = rows
     var y: CGFloat = 0
     var width: CGFloat = 0
-    
+
     for rowIndex in positionedRows.indices {
       positionedRows[rowIndex].originY = y
       y += positionedRows[rowIndex].height
       width = max(width, positionedRows[rowIndex].width)
     }
-    
+
     return (positionedRows, CGSize(width: width, height: y))
   }
 
@@ -183,7 +183,7 @@ private extension HFlowSeparatorLayout {
       }
     }
   }
-  
+
   func xOffset(for rowWidth: CGFloat, in bounds: CGRect) -> CGFloat {
     switch alignment {
     case .leading:
@@ -203,14 +203,14 @@ private extension HFlowSeparatorLayout {
       let size: CGSize
       let origin: CGPoint
     }
-    
+
     var elements: [PlacedElement] = []
     var width: CGFloat = 0
     var height: CGFloat = 0
     var originY: CGFloat = 0
-    
+
     var isEmpty: Bool { elements.isEmpty }
-    
+
     mutating func append(index: Int, size: CGSize, spacing: CGFloat) {
       let xPosition = isEmpty ? 0 : width + spacing
       let placedElement = PlacedElement(
@@ -224,7 +224,7 @@ private extension HFlowSeparatorLayout {
       height = max(height, size.height)
     }
   }
-  
+
   struct MeasuredSubview {
     let index: Int
     let size: CGSize
