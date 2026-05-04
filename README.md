@@ -4,7 +4,7 @@
 ![iOS 18+](https://img.shields.io/badge/iOS-18%2B-blue.svg)
 ![SPM](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)
 
-A SwiftUI flow layout that automatically inserts a separator between items and hides it when it would end up at the end of a line. Useful for tags, breadcrumbs, inline metadata, and compact lists built with the `Layout` protocol.
+A SwiftUI flow layout that automatically inserts a separator between items and hides it when it would end up at the end of a line.
 
 ![Preview](preview.png)
 
