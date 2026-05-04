@@ -11,7 +11,7 @@ A SwiftUI flow layout that automatically inserts a separator between items and h
 ## Installation
 
 ```swift
-.package(url: "https://github.com/bernndr/InlineFlowSeparatorLayout.git", branch: "main")
+.package(url: "https://github.com/bernndr/InlineFlowSeparatorLayout.git", from: "0.1.0")
 ```
 
 Alternatively, add the package from Xcode using the project's repository URL.
